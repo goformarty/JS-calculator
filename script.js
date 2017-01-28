@@ -1,147 +1,179 @@
-var input=[];
-var newNumber=[];
-var calc=[];
-var prev_sums=[];
-var num1, num2, sum, error;
-var answerDiv=document.getElementById('answer');
+var n1 = 0,
+n2 = 0,
+next_operator = '',
+i = 0;
 
-function addition(a,b){return a+b;}
-function subtract(a,b){return a-b;}
-function mult(a,b){return a*b;}
-function div(a,b){return a/b;}
+var add = function(n1, n2) {
+  return (+n1 + +n2);
+};
 
-//turns a number whole and pushes to input
-function getWholeNum(){
+var subtract = function(n1, n2) {
+  return (+n1 - +n2);
+};
 
-	//clears out the newNumber array
-	newNumber=[];
-	
-	//takes all the numbers in the input array and concats
-	for (var i = 0; i < input.length; i++) {
-    newNumber = newNumber+input[i];
-	}	
-	
-	//turns the number into a integer
-	newNumber=parseInt(newNumber);
+var multiply = function(n1, n2) {
+  return (+n1 * +n2).toFixed(2);
+};
 
-	//clears out the input array afterusage
-	// console.log("input: "+ input);
-	input = new Array();
+var divide = function(n1, n2) {
+  return (+n1 / +n2).toFixed(2);
+};
 
-	return newNumber;
-}
+var press_button = function(curr_btn){
+  if (n1.length != 0 && i == 0) {
+    clear_display();
+    display(curr_btn);
+    i++;
+  } else {
+    i++;
+    display(curr_btn);
+  }
+};
 
-function clear_screen(){
-	answerDiv.innerHTML="";
-}
+var display = function(number) {
+  var display_number = document.getElementById("screen");
+  if (i === 1) {
+    display_number.innerHTML = "";
+    display_number.innerHTML = display_number.innerHTML + number;
+  } else if(i > 10) {
+    document.getElementById("screen").style.display = "none";
+    setTimeout(function(){
+      document.getElementById("screen").style.display = "block";
+    }, 100);
+    document.getElementById("screen").innerHTML = "Too long";
+  } else {
+    display_number.innerHTML = display_number.innerHTML + number;
+  }
+};
 
-//activated onclick. takes a number and puts it onto the screen
-function inputNumber(n){
-	console.log("button press. "+n);
+var clear_display = function() {
+  document.getElementById("screen").innerHTML = "";
+};
 
-	if (typeof sum=="number") {
-		console.log("sum is a number.");
-		reset();
-	} else if ( error==true ){
-		clear_screen();
-		reset();
-	}
+var reset = function() {
+  document.getElementById("screen").innerHTML = "";
+  n1 = 0;
+  n2 = 0;
+  next_operator = 0;
+  i = 0;
+};
 
-	//pushes number into input array
-	input.push(n);
+var get_number = function() {
+  if (n1 === 0) {
+    n1 = document.getElementById("screen").innerHTML;
+  } else {
+    n2 = document.getElementById("screen").innerHTML;
+  }
+};
 
-	//puts the number onto the screen div
-	answerDiv.insertAdjacentHTML('beforeend',n);
-}
+var operator = function(sign) {
+  if (sign === "equals") {
+    get_result();
+    n1 = 0
+    n2 = 0;
+    i = 0;
+  } else if (sign === "negate") {
+    var num = document.getElementById("screen").innerHTML;
+    document.getElementById("screen").innerHTML = +num * -1;
+  } else {
+    next_operator = sign;
+    get_number();
+    calculate_step();
+    i = 0;
+  }
+};
 
-//what happens when you press an operator button
-function operator(op){
-	
-	if (calc[3]) {
-		error();
-		return;
-	};
+var get_result = function() {
+  get_number();
+  if (next_operator === "add") {
+    clear_display();
+    i = (add(n1, n2)).length
+    display(add(n1, n2));
+  } else if (next_operator === "subtract") {
+    clear_display();
+    i = (subtract(n1, n2)).length
+    display(subtract(n1, n2));
+  } else if (next_operator === "multiply") {
+    clear_display();
+    i = (multiply(n1, n2)).length
+    display(multiply(n1, n2));
+  } else if (next_operator === "divide") {
+    clear_display();
+    i = (divide(n1, n2)).length
+    display(divide(n1, n2));
+  }
+};
 
-	console.log("button press."+op);
-	
-	// needs to log new number into calc array
-	pushCalc();
+var calculate_step = function() {
+  if (n1 != 0 && n2 != 0) {
+    get_result();
+    n1 = document.getElementById("screen").innerHTML;
+    n2 = 0;
+    i = 0;
+  }
+};
 
-	if ( op == "x" ) { answerDiv.insertAdjacentHTML('beforeend',"&times;"); } 
-	else if ( op == "-" ) { answerDiv.insertAdjacentHTML('beforeend',"&ndash;"); } 
-	else if ( op == "/" ) { answerDiv.insertAdjacentHTML('beforeend',"÷"); } 
-	else {answerDiv.insertAdjacentHTML('beforeend',op); }
-	
-	//pushes operation into calc array
-	pushCalc(op);
-
-}
-
-function pushCalc(x){
-	if (typeof x == "string") {
-		calc.push(x);
- 		console.log("pushed to calc: "+calc);
-	} else {
-		calc.push( getWholeNum() );
- 		console.log("pushed to calc: "+calc);
- 	}
-}
-
-function reset(){
-	input=[];
-	newNumber=[];
-	calc=[];
-	num1, num2; 
-	sum=[];
-	answerDiv.innerHTML="";
-	console.log("reset",input,newNumber,calc,num1,num2,sum);
-}
-
-function reset_all(){
-	reset();
-	prev_sums="";
-	document.getElementById('sums').innerHTML=prev_sums;
-}
-
-function error(){
-	error=true;
-	reset();
-	answerDiv.innerHTML="ERROR";
-}
-
-function calculate(){
-	
-	//push last number to calc
-	pushCalc();
-
-	if ( calc[1]== "+") { 
-		sum = addition(calc[0],calc[2]);
-		// update_sums();
-		answerDiv.insertAdjacentHTML('beforeend',"="+sum);
-		input=[];
-	}
-	else if ( calc[1]== "-") { 
-		sum = subtract(calc[0],calc[2]);
-		// update_sums();
-		answerDiv.insertAdjacentHTML('beforeend',"="+sum);
-		input=[];
-	}
-	else if ( calc[1]== "x") { 
-		sum = mult(calc[0],calc[2]);
-		// update_sums();
-		answerDiv.insertAdjacentHTML('beforeend',"="+sum);
-		input=[];
-	}	
-	else if ( calc[1]== "/") { 
-		sum = div(calc[0],calc[2]);
-		// update_sums();
-		answerDiv.insertAdjacentHTML('beforeend',"="+sum);
-		input=[];
-	}	
-}
-
-function update_sums(){
-	prev_sums.unshift(sum);
-	document.getElementById('sums').innerHTML=prev_sums;
-}
-
+document.onkeyup = function(e) {
+  e = e || event
+  if(!e.shiftKey){
+    switch(e.keyCode){
+      case 49:
+        press_button(1);
+        break;
+      case 50:
+        press_button(2);
+        break;
+      case 51:
+        press_button(3);
+        break;
+      case 52:
+        press_button(4);
+        break;
+      case 53:
+        press_button(5);
+        break;
+      case 54:
+        press_button(6);
+        break;
+      case 55:
+        press_button(7);
+        break;
+      case 56:
+        press_button(8);
+        break;
+      case 57:
+        press_button(9);
+        break;
+      case 48:
+        press_button(0);
+        break;
+      case 187:
+        operator('equals');
+        break;
+      case 189:
+        operator('subtract');
+        break;
+      case 88:
+        operator('multiply');
+        break;
+      case 191:
+        operator('divide');
+      case 190:
+        press_button('.');
+        break;
+      case 13:
+        operator('equals');
+        break;
+      case 27:
+        reset();
+    }
+  } else if(e.shiftKey) {
+    switch(e.keyCode){
+      case 187:
+        operator('add');
+        break;
+      case 56:
+        operator('multiply');
+    }
+  }
+};

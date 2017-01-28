@@ -1,50 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>JS Calculator</title>
-	<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <title>JS-Calculator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-	<div class="container">
-		<h2>calculator</h2>
 
-		<div id="answer"></div>
-		<div class="buttons">
-			<li class="operator" onclick="reset()">c
-			<li class="operator">+/-
-			<li class="operator">%
-			<li class="operator" onclick="operator('/')">÷
-		</div>
-		<div class="buttons">
-			<li onclick="inputNumber('1')">1
-			<li onclick="inputNumber('2')">2
-			<li onclick="inputNumber('3')">3
-			<li class="operator" onclick="operator('x')">&times;
-		</div>
-		<div class="buttons">
-			<li onclick="inputNumber('4')">4
-			<li onclick="inputNumber('5')">5
-			<li onclick="inputNumber('6')">6
-			<li class="operator" onclick="operator('-')">&ndash;
-		</div>
-		<div class="buttons">			
-			<li onclick="inputNumber('7')">7
-			<li onclick="inputNumber('8')">8
-			<li onclick="inputNumber('9')">9
-			<li class="operator" onclick="operator('+')">+
-		</div>
-		<div class="buttons">
-			<li class="double" onclick="inputNumber('0')">0
-			<li class="operator">.
-			<li class="operator" onclick="calculate()">=
-			<!-- <li class="operator" onclick="getNumber('.')">. -->
-			<!-- <li class="operator" onclick="operator('%')">% -->
-			<!-- <li class="operator" onclick="reset_all()">ac -->
-		</div>		
-		<!-- <div id="sums"></div> -->
-	</div>
-	
-	<script src="script.js"></script>
+<body>
+ <div class="container">
+
+  <div id="calculator">
+    <div id="screen-container">
+      <div id="screen">0</div>
+    </div>
+    <div id="numpad">
+      <div id="clear" class="operator button" onclick="reset()">
+        <span>AC</span>
+      </div>
+      <div id="negate" class="operator button" onclick="operator('negate')">
+        <span>+/-</span>
+      </div>
+      <div id="divide" class="operator button" onclick="operator('divide')">
+        <span>&divide;</span>
+      </div>
+      <div id="seven" class="digit button" onclick="press_button(7)">
+        <span>7</span>
+      </div>
+      <div id="eight" class="digit button" onclick="press_button(8)">
+        <span>8</span>
+      </div>
+      <div id="nine" class="digit button" onclick="press_button(9)">
+        <span>9</span>
+      </div>
+      <div id="multiply" class="operator button" onclick="operator('multiply')">
+        <span>x</span>
+      </div>
+      <div id="four" class="digit button" onclick="press_button(4)">
+        <span>4</span>
+      </div>
+      <div id="five" class="digit button" onclick="press_button(5)">
+        <span>5</span>
+      </div>
+      <div id="six" class="digit button" onclick="press_button(6)">
+        <span>6</span>
+      </div>
+      <div id="add" class="operator button" onclick="operator('add')">
+        <span>+</span>
+      </div>
+      <div id="one" class="digit button" onclick="press_button(1)">
+        <span>1</span>
+      </div>
+      <div id="two" class="digit button" onclick="press_button(2)">
+        <span>2</span>
+      </div>
+      <div id="three" class="digit button" onclick="press_button(3)">
+        <span>3</span>
+      </div>
+      <div id="subtract" class="operator button" onclick="operator('subtract')">
+        <span>—</span>
+      </div>
+      <div id="zero" class="digit button" onclick="press_button(0)">
+        <span>0</span>
+      </div>
+      <div id="decimal" class="digit button" onclick="press_button('.')">
+        <span>.</span>
+      </div>
+      <div id="equals" class="operator button" onclick="operator('equals')">
+        <span>=</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  <script src="script.js" type="text/javascript"></script>
 </body>
 </html>
